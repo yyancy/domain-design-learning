@@ -8,21 +8,30 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class BasicChargeRule extends AbstractChargeRule{
+public class BasicChargeRule extends AbstractChargeRule {
+
+    /**
+     * 主叫单价。单位是角，5表示0.5元每分钟
+     */
+    public final int CALLING_PRICE = 5;
+
+    /**
+     * 主叫单价。单位是角，4表示0.4元每分钟
+     */
+    public final int CALLED_PRICE = 4;
+
     @Override
     public ChargeRecord doCharge(ChargeContext ctx) {
-        if(!ctx.needCharge()){
-            log.debug("No need charge for : "+ctx);
+        if (!ctx.needCharge()) {
+            log.debug("No need charge for : " + ctx);
             return null;
         }
-        BasicChargePlan basicChargePlan = (BasicChargePlan)chargePlan;
-        BasicChargePlan.BasicChargeFee chargeFee = basicChargePlan.getResource();
         Money cost;
         int duration = ctx.durationToCharge;
         if (ctx.callType == CallType.CALLING) {
-            cost = Money.of(duration * chargeFee.CALLING_PRICE);
+            cost = Money.of(duration * CALLING_PRICE);
         } else {
-            cost = Money.of(duration * chargeFee.CALLED_PRICE);
+            cost = Money.of(duration * CALLED_PRICE);
         }
         ChargeRecord chargeRecord = new ChargeRecord(ctx.phoneNo, ctx.callType, duration, ChargePlanType.BASIC, cost);
 

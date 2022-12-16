@@ -1,11 +1,12 @@
 package com.huawei.charging.domain.charge.chargeplan;
 
 import com.huawei.charging.domain.charge.chargerule.ChargeRule;
+import com.huawei.charging.domain.charge.chargerule.FamilyChargeRule;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class FamilyChargePlan extends ChargePlan<FamilyChargePlan.FamilyMember> {
+public class FamilyChargePlan extends ChargePlan<FamilyChargeRule.FamilyMember> {
 
     public FamilyChargePlan(ChargeRule rule) {
         this.priority = 2;
@@ -13,8 +14,8 @@ public class FamilyChargePlan extends ChargePlan<FamilyChargePlan.FamilyMember> 
     }
 
     @Override
-    public FamilyMember getResource() {
-        return new FamilyMember();
+    public FamilyChargeRule.FamilyMember getResource() {
+        return new FamilyChargeRule.FamilyMember();
     }
 
     @Override
@@ -22,20 +23,5 @@ public class FamilyChargePlan extends ChargePlan<FamilyChargePlan.FamilyMember> 
         return ChargePlanType.FAMILY;
     }
 
-    public static class FamilyMember implements Resource{
-        private Set<Long> familyMembers = new HashSet<>();
-
-        /**
-         * Mock here, 真实场景，情亲号码肯定也是从外系统获取的
-         */
-        public FamilyMember() {
-            familyMembers.add(13681874561L);
-            familyMembers.add(15921582125L);
-        }
-
-        public boolean isMember(long phoneNo) {
-            return familyMembers.contains(phoneNo);
-        }
-    }
 }
 
